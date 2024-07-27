@@ -1,4 +1,4 @@
-/* Global Reset */
+/* General Reset */
 * {
     margin: 0;
     padding: 0;
@@ -9,13 +9,13 @@
     background-position: 0 -130px;
     height: 51px;
     width: 175px;
-    background-image: url('images/instagramlogo.png');
+    background-image: url(https://bit.ly/3v2LT17);
 }
 
 /* Facebook Logo */
 .facebook-logo {
     background-position: -414px -259px;
-    background-image: url('images/facebook-icon.png');
+    background-image: url(https://bit.ly/3v2LT17);
     height: 16px;
     width: 16px;
 }
@@ -25,7 +25,7 @@
     background-position: -132px -182px;
     height: 42px;
     width: 128px;
-    background-image: url('images/applestore.png');
+    background-image: url(https://bit.ly/3v2LT17);
 }
 
 /* Google Store Logo */
@@ -33,7 +33,7 @@
     background-position: 0 -182px;
     height: 42px;
     width: 130px;
-    background-image: url('images/googlestore.png');
+    background-image: url(https://bit.ly/3v2LT17);
 }
 
 /* Button Animation */
