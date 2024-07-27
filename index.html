@@ -1,86 +1,103 @@
-let slide_content = document.querySelector('#slide-content');
-let signin_form = document.querySelector('#signin-form');
-let signin_btn = document.querySelector('#signin-btn');
-let darkmode_toggle = document.querySelector('#darkmode-toggle');
-
-let slide_index = 0;
-
-slide = () => {
-    let slide_items = slide_content.querySelectorAll('img');
-    slide_items.forEach(e => e.classList.remove('active'));
-    slide_index = slide_index + 1 === slide_items.length ? 0 : slide_index + 1;
-    slide_items[slide_index].classList.add('active');
-}
-
-setInterval(slide, 2000);
-
-// animate input
-document.querySelectorAll('.animate-input').forEach(e => {
-    let input = e.querySelector('input');
-    let button = e.querySelector('button');
-
-    input.onkeyup = () => {
-        if (input.value.trim().length > 0) {
-            e.classList.add('active');
-        } else {
-            e.classList.remove('active');
-        }
-
-        if (checkSigninInput()) {
-            signin_btn.removeAttribute('disabled');
-        } else {
-            signin_btn.setAttribute('disabled', 'true');
-        }
-    }
-
-    // show password button
-    if (button) {
-        button.onclick = () => {
-            if (input.getAttribute('type') === 'text') {
-                input.setAttribute('type', 'password');
-                button.innerHTML = 'Show';
-            } else {
-                input.setAttribute('type', 'text');
-                button.innerHTML = 'Hide';
-            }
-        }
-    }
-})
-
-checkSigninInput = () => {
-    let username = signin_form.querySelector('input[type="text"]').value.trim();
-    let password = signin_form.querySelector('input[type="password"]').value.trim();
-    let usernameValid = username.length >= 4;
-    let passwordValid = password.length >= 8;
-
-    return usernameValid && passwordValid;
-}
-
-// Handle form submission
-signin_form.onsubmit = (e) => {
-    e.preventDefault(); // Prevent form from submitting the traditional way
-
-    let username = signin_form.querySelector('input[type="text"]').value.trim();
-    let password = signin_form.querySelector('input[type="password"]').value.trim();
-
-    if (username.length < 4) {
-        alert('Username must be at least 4 characters long.');
-        return;
-    }
-
-    if (password.length < 8) {
-        alert('Password must be at least 8 characters long.');
-        return;
-    }
-
-    // Here, you can handle the form submission (e.g., send data to a server)
-    alert('Form submitted successfully!');
-}
-
-// darkmode toggle
-darkmode_toggle.onclick = (e) => {
-    e.preventDefault();
-    let body = document.querySelector('body');
-    body.classList.toggle('dark');
-    darkmode_toggle.innerHTML = body.classList.contains('dark') ? 'Lightmode' : 'Darkmode';
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/png">
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <!-- APP CSS -->
+    <link rel="stylesheet" href="./app.css">
+</head>
+<body>
+    <div class="container">
+        <div class="main-container">
+            <div class="main-content">
+                <div class="slide-container" style="background-image: url(./images/phone-frame.png);">
+                    <div class="slide-content" id="slide-content">
+                        <img src="./images/slide (1).jpg" alt="slide image" class="active">
+                        <img src="./images/slide (2).jpg" alt="slide image">
+                        <img src="./images/slide (3).jpg" alt="slide image">
+                        <img src="./images/slide (4).jpg" alt="slide image">
+                        <img src="./images/slide (5).jpg" alt="slide image">
+                    </div>
+                </div>
+                <div class="form-container">
+                    <div class="form-content box">
+                        <div class="logo">
+                            <img src="./images/logo-light.png" alt="Instagram logo" class="logo-light">
+                            <img src="./images/logo-dark.png" alt="Instagram logo" class="logo-dark">
+                        </div>
+                        <form class="signin-form" id="signin-form">
+                            <div class="form-group">
+                                <div class="animate-input">
+                                    <span>Phone number, username or email</span>
+                                    <input type="text" id="username">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="animate-input">
+                                    <span>Password</span>
+                                    <input type="password" id="password">
+                                    <button type="button" id="show-password">Show</button>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn-login" id="signin-btn" disabled>Log In</button>
+                            </div>
+                            <div class="divine">
+                                <div></div>
+                                <div>OR</div>
+                                <div></div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn-fb">
+                                    <img src="./images/facebook-icon.png" alt="Facebook icon">
+                                    <span>Log in with Facebook</span>
+                                </button>
+                            </div>
+                            <a href="#" class="forgot-pw">Forgot password?</a>
+                        </form>
+                    </div>
+                    <div class="box goto">
+                        <p>Don't have an account? <a href="#">Sign up</a></p>
+                    </div>
+                    <div class="app-download">
+                        <p>Get the app.</p>
+                        <div class="store-link">
+                            <a href="#">
+                                <img src="./images/app-store.png" alt="App Store">
+                            </a>
+                            <a href="#">
+                                <img src="./images/gg-play.png" alt="Google Play">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="links">
+                <a href="#">About</a>
+                <a href="#">Blog</a>
+                <a href="#">Jobs</a>
+                <a href="#">Help</a>
+                <a href="#">API</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Top Accounts</a>
+                <a href="#">Hashtags</a>
+                <a href="#">Locations</a>
+                <a href="#" id="darkmode-toggle">Darkmode</a>
+            </div>
+            <div class="copyright">© 2021 Instagram from Facebook</div>
+        </div>
+    </div>
+    <!-- APP JS -->
+    <script src="./app.js"></script>
+</body>
+</html>
